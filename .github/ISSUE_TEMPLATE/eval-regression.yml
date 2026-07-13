@@ -1,0 +1,36 @@
+name: Eval regression
+about: Report a reproducible Skill output regression
+labels: []
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Skill version
+      placeholder: 1.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: prompt
+    attributes:
+      label: Reproduction prompt
+      description: Remove private data and include only redistributable context.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and concrete evidence
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Agent client, model, tools, and environment
+    validations:
+      required: true

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="[REPLACE: prototype description]" />
+  <title>[REPLACE: Product Design Review]</title>
+  <link rel="stylesheet" href="tokens/tokens.css" />
+  <link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <a class="brand" href="#overview" aria-label="[REPLACE: product] 设计规范首页">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>[REPLACE: Product]</span>
+    </a>
+    <nav class="topnav" aria-label="设计评审导航">
+      <a href="#foundations">基础规范</a>
+      <a href="#components">组件</a>
+      <a href="#product-proof">产品页面</a>
+    </nav>
+    <button class="button button-secondary" id="themeToggle" type="button" aria-pressed="false">切换对比主题</button>
+  </header>
+
+  <main id="main">
+    <section class="hero section" id="overview">
+      <p class="eyebrow">DESIGN SYSTEM · V1.0.0</p>
+      <h1>[REPLACE: A specific design direction]</h1>
+      <p class="lead">[REPLACE: Explain what the system optimizes for and what product proof is included.]</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="#product-proof">查看产品落地</a>
+        <a class="button button-secondary" href="DESIGN.md">打开 DESIGN.md</a>
+      </div>
+    </section>
+
+    <section class="section" id="foundations">
+      <div class="section-heading">
+        <p class="eyebrow">FOUNDATIONS</p>
+        <h2>基础规范</h2>
+        <p>[REPLACE: show real token names, typography and layout rules.]</p>
+      </div>
+      <div class="grid grid-3">
+        <article class="card"><h3>颜色</h3><p>[REPLACE]</p></article>
+        <article class="card"><h3>字体</h3><p>[REPLACE]</p></article>
+        <article class="card"><h3>布局</h3><p>[REPLACE]</p></article>
+      </div>
+    </section>
+
+    <section class="section" id="components">
+      <div class="section-heading">
+        <p class="eyebrow">COMPONENTS</p>
+        <h2>组件与状态</h2>
+        <p>[REPLACE: include default, hover, focus, disabled, loading, empty and error.]</p>
+      </div>
+      <div class="card demo-panel">
+        <div class="demo-row">
+          <button class="button button-primary" type="button">主要操作</button>
+          <button class="button button-secondary" type="button">次要操作</button>
+          <button class="button button-primary" type="button" disabled>禁用操作</button>
+        </div>
+        <label class="field">
+          <span>示例字段</span>
+          <input type="text" placeholder="[REPLACE: meaningful placeholder]" />
+          <small>字段说明必须具体。</small>
+        </label>
+      </div>
+    </section>
+
+    <section class="section" id="product-proof">
+      <div class="section-heading">
+        <p class="eyebrow">PRODUCT PROOF</p>
+        <h2>[REPLACE: Real product screen or flow]</h2>
+        <p>[REPLACE: Use real domain structure and realistic states.]</p>
+      </div>
+      <article class="product-shell card">
+        <aside class="product-nav" aria-label="示例产品导航">
+          <strong>[REPLACE]</strong>
+          <a class="is-active" href="#product-proof">工作台</a>
+          <a href="#product-proof">任务</a>
+          <a href="#product-proof">报告</a>
+        </aside>
+        <div class="product-main">
+          <div class="product-toolbar">
+            <div><p class="eyebrow">WORKBENCH</p><h3>[REPLACE: domain title]</h3></div>
+            <button class="button button-primary" type="button">[REPLACE: primary action]</button>
+          </div>
+          <div class="empty-state" role="status">
+            <div class="empty-icon" aria-hidden="true">—</div>
+            <h4>[REPLACE: meaningful empty state]</h4>
+            <p>[REPLACE: explain why it is empty and what the user can do.]</p>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>[REPLACE: artifact name]</span>
+    <a href="reports/artifact-audit.json">查看审计报告</a>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

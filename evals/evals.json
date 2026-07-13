@@ -1,0 +1,91 @@
+{
+  "skill_name": "design-artifact-generator",
+  "evals": [
+    {
+      "id": 1,
+      "name": "brand-evidence-to-admin-artifact",
+      "prompt": "根据品牌简报和现有后台截图，生成严格符合 Google DESIGN.md 的完整规范，并做一个可运行的后台首页、列表页和详情抽屉，输出 versioned ZIP。",
+      "expected_output": "A versioned ZIP with an evidence ledger, flat Google-compatible tokens, complete DESIGN.md sections, catalog, realistic admin screens, states, audit and critique reports.",
+      "files": [
+        "evals/files/brand-brief.md",
+        "evals/files/current-dashboard.svg"
+      ],
+      "assertions": [
+        "The output contains a versioned ZIP whose root directory contains DESIGN.md, index.html, artifact.json, tokens, evidence, and reports.",
+        "DESIGN.md uses flat color tokens and Google typography field names, and passes the bundled strict validator with zero errors.",
+        "evidence/sources.md distinguishes the brand brief from the synthetic legacy screenshot and records their roles.",
+        "evidence/decisions.md distinguishes observed, derived, and proposed decisions.",
+        "The runnable prototype includes a dashboard, task list, and detail drawer using realistic operations language.",
+        "The prototype demonstrates required interaction and system states rather than only static component samples.",
+        "The artifact audit report has zero errors and the critique report contains evidence-backed scores.",
+        "No external hotlinked assets, credentials, lorem ipsum, or unresolved placeholders are packaged."
+      ]
+    },
+    {
+      "id": 2,
+      "name": "existing-vue-product-extraction",
+      "prompt": "读取现有 Vue3 产品约束，保留信息架构和业务流程，提炼 DESIGN.md，并提供独立静态评审包。",
+      "expected_output": "Existing product evidence is distinguished from proposed rules; framework constraints are recorded; implementation guidance and a portable static artifact are produced.",
+      "files": [
+        "evals/files/existing-product-structure.md"
+      ],
+      "assertions": [
+        "The output preserves the documented route flow and does not replace it with a generic unrelated dashboard.",
+        "The design decisions record Vue 3, TypeScript, Element Plus wrappers, backend permissions, and the zero-build review constraint.",
+        "DESIGN.md includes implementation guidance that maps system rules to the existing component wrappers without embedding framework-specific data in normative tokens.",
+        "The portable review artifact opens without npm install or backend access.",
+        "The result explains how dynamic navigation and permission-restricted states should appear.",
+        "The generated artifact passes local DESIGN.md validation and artifact audit."
+      ]
+    },
+    {
+      "id": 3,
+      "name": "invalid-design-audit-only",
+      "prompt": "只审计这个 DESIGN.md。它使用嵌套 colors.brand.primary、错误的 typography.body.size 和编号章节。告诉我哪里不符合规范，不要改文件。",
+      "expected_output": "Audit mode reports nested colors, nonstandard typography fields, and unrecognized numbered headings as structured findings while preserving the source.",
+      "files": [
+        "evals/files/legacy-design-invalid.md"
+      ],
+      "assertions": [
+        "The source file is not modified.",
+        "The report identifies nested color groups as invalid.",
+        "The report identifies family and size as nonstandard typography properties and explains the expected property names.",
+        "The report identifies numbered standard headings as a parser compatibility problem.",
+        "The response does not claim the file passed validation."
+      ]
+    },
+    {
+      "id": 4,
+      "name": "requirements-and-reference-without-brand-manual",
+      "prompt": "我只有产品需求和参考站观察记录，没有品牌手册。帮我做完整设计系统和高保真原型。",
+      "expected_output": "The result proceeds without blocking, clearly labels proposed brand values, records the reference role, and avoids copying reference-specific assets.",
+      "files": [
+        "evals/files/product-requirements.md",
+        "evals/files/reference-site-notes.md"
+      ],
+      "assertions": [
+        "The skill proceeds without requiring a missing brand manual and explicitly labels introduced visual identity values as proposed.",
+        "The reference notes are treated as inspiration rather than brand authority or copyable assets.",
+        "The prototype implements the budget audit workflow and all states listed in the requirements.",
+        "The design direction is suitable for Chinese government and enterprise finance users rather than a playful consumer style.",
+        "The package contains evidence, validation, audit, critique, and runnable prototype outputs."
+      ]
+    },
+    {
+      "id": 5,
+      "name": "multi-theme-from-existing-design",
+      "prompt": "基于现有 DESIGN.md 做四套主题的首页原型，并确保主题和布局结构解耦。",
+      "expected_output": "Normative frontmatter stays flat; theme overrides are stored separately; four runnable themes share component and layout contracts.",
+      "files": [
+        "evals/files/base-DESIGN.md"
+      ],
+      "assertions": [
+        "The existing DESIGN.md remains structurally valid and does not gain nested theme objects in frontmatter.",
+        "Four theme override sets are represented in tokens/themes.json or an equivalent companion token file.",
+        "Theme switching changes tokens without duplicating or replacing the page information architecture.",
+        "All themes retain accessible contrast, focus visibility, and non-color status cues.",
+        "The artifact provides a single runnable entry and documents the theme extension strategy."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "status": "unestablished",
+  "skillVersion": "1.1.0",
+  "benchmark": null,
+  "note": "No model-generated benchmark is fabricated. Establish the first baseline by running all evals against the released skill and a comparison configuration, recording evidence, obtaining human approval, and using manage_evals.py promote."
+}

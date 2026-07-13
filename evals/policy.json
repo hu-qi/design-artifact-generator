@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "minimum_candidate_pass_rate": 0.85,
+  "max_overall_score_regression": 0.0,
+  "max_case_pass_rate_regression": 0.0,
+  "max_token_increase_ratio": 0.30,
+  "minimum_score_gain_for_large_token_increase": 0.03,
+  "require_human_approval_for_promotion": true
+}

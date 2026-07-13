@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-07-13",
+  "googleDesignMd": {
+    "package": "@google/design.md",
+    "packageVersion": "0.3.0",
+    "formatVersion": "alpha",
+    "repository": "https://github.com/google-labs-code/design.md",
+    "specification": "https://github.com/google-labs-code/design.md/blob/main/docs/spec.md"
+  },
+  "agentSkills": {
+    "specification": "https://agentskills.io/specification",
+    "evaluationGuide": "https://agentskills.io/skill-creation/evaluating-skills"
+  }
+}

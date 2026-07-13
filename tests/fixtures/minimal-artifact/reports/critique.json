@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "score": 4.2,
+  "axes": {
+    "evidence": {"score": 4.0, "notes": "Fixture evidence is intentionally minimal."},
+    "brand": {"score": 4.2, "notes": "The blue and neutral roles are consistent."},
+    "hierarchy": {"score": 4.2, "notes": "The fixture has a clear title and action."},
+    "typography": {"score": 4.0, "notes": "The deterministic type scale is valid."},
+    "components": {"score": 4.0, "notes": "A primary button contract is present."},
+    "interaction": {"score": 4.0, "notes": "The fixture has a labeled button."},
+    "responsive": {"score": 4.0, "notes": "The viewport contract is present."},
+    "accessibility": {"score": 4.2, "notes": "Semantic main and button text are present."},
+    "specificity": {"score": 4.2, "notes": "The domain direction is stated."},
+    "restraint": {"score": 4.5, "notes": "The fixture avoids decorative noise."}
+  },
+  "exceptions": ["This is a script fixture, not a visual benchmark."]
+}

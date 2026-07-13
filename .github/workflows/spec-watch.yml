@@ -1,0 +1,86 @@
+name: Upstream Spec Watch
+
+on:
+  schedule:
+    - cron: "17 3 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Check pinned upstream versions
+        id: drift
+        shell: bash
+        run: |
+          set +e
+          python scripts/check_upstream.py --out upstream-drift.json
+          status=$?
+          set -e
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          data = json.load(open('upstream-drift.json', encoding='utf-8'))
+          print(f"drift={'true' if data.get('drift') else 'false'}")
+          print(f"errors={data.get('summary', {}).get('error', 0)}")
+          PY
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare issue body
+        if: steps.drift.outputs.status != '0'
+        run: |
+          python - <<'PY'
+          import json
+          data = json.load(open('upstream-drift.json', encoding='utf-8'))
+          lines = [
+              '# Upstream specification drift report',
+              '',
+              'The scheduled watcher detected a version change or could not complete the check.',
+              '',
+              '```json',
+              json.dumps(data, ensure_ascii=False, indent=2),
+              '```',
+              '',
+              'Do not update the lock automatically. Review upstream changes, add regression fixtures, update validators/references, run Tier 1 and Tier 2 gates, then update `references/upstream-lock.json`.',
+          ]
+          open('upstream-drift.md', 'w', encoding='utf-8').write('\n'.join(lines) + '\n')
+          PY
+
+      - name: Create or update drift issue
+        if: steps.drift.outputs.status != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          issue=$(gh issue list --state open --search '"Upstream DESIGN.md drift detected" in:title' --json number --jq '.[0].number // ""')
+          if [ -z "$issue" ]; then
+            gh issue create --title "Upstream DESIGN.md drift detected" --body-file upstream-drift.md
+          else
+            gh issue comment "$issue" --body-file upstream-drift.md
+          fi
+
+      - name: Upload drift report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: upstream-drift-report
+          path: upstream-drift.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Fail on watcher execution errors
+        if: steps.drift.outputs.errors != '0'
+        run: exit 1

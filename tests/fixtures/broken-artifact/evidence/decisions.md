@@ -1,0 +1,3 @@
+# Decisions
+
+- [proposed] Fixture only.

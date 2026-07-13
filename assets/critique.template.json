@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "score": null,
+  "axes": {
+    "evidence": {"score": null, "notes": "[REPLACE]"},
+    "brand": {"score": null, "notes": "[REPLACE]"},
+    "hierarchy": {"score": null, "notes": "[REPLACE]"},
+    "typography": {"score": null, "notes": "[REPLACE]"},
+    "components": {"score": null, "notes": "[REPLACE]"},
+    "interaction": {"score": null, "notes": "[REPLACE]"},
+    "responsive": {"score": null, "notes": "[REPLACE]"},
+    "accessibility": {"score": null, "notes": "[REPLACE]"},
+    "specificity": {"score": null, "notes": "[REPLACE]"},
+    "restraint": {"score": null, "notes": "[REPLACE]"}
+  },
+  "exceptions": []
+}
