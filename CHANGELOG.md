@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1 — 2026-07-14
+
+- Patch release: validate full release pipeline end-to-end
+
 ## 1.1.0 — 2026-07-13
 
 - Added GitHub Actions CI across Python 3.10–3.14 and pinned official Google DESIGN.md validation.

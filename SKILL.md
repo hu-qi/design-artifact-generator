@@ -5,7 +5,7 @@ license: Apache-2.0
 compatibility: Requires file read/write and Python 3.10+. Web access is needed only when reference URLs must be inspected. Browser screenshot capability is recommended for visual QA but is not mandatory.
 metadata:
   author: open-source-workflow
-  version: "1.1.0"
+  version: "1.1.1"
   specification: "agentskills.io"
   design-md: "@google/design.md 0.3.0 / format alpha"
 ---
