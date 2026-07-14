@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.2 — 2026-07-14
+
+- Restructure to skills/design-artifact-generator/ so npx skills add distributes scripts/, references/, and assets/ alongside SKILL.md
+- Split repository-level dev scripts from skill-internal scripts; add AGENTS.md
+
 ## 1.1.1 — 2026-07-14
 
 - Patch release: validate full release pipeline end-to-end
