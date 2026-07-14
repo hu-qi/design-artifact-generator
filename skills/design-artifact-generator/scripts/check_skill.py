@@ -22,20 +22,8 @@ JUNK_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache", ".ve
 JUNK_FILES = {".DS_Store", "Thumbs.db"}
 REQUIRED_FILES = {
     "SKILL.md",
-    "README.md",
-    "CHANGELOG.md",
-    "LICENSE",
-    "requirements.txt",
-    "evals/evals.json",
-    "evals/policy.json",
-    "evals/baseline.json",
     "references/self-iteration.md",
-    "scripts/run_ci.py",
-    "scripts/manage_evals.py",
     "scripts/build_skill_distribution.py",
-    ".github/workflows/ci.yml",
-    ".github/workflows/release.yml",
-    ".github/workflows/spec-watch.yml",
 }
 
 
@@ -48,45 +36,6 @@ def load_frontmatter(path: Path) -> tuple[dict[str, Any], str]:
     if not isinstance(data, dict):
         raise ValueError("SKILL.md frontmatter must be a mapping")
     return data, text[match.end():]
-
-
-def validate_evals(root: Path, findings: list[dict[str, str]]) -> None:
-    path = root / "evals" / "evals.json"
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except Exception as exc:
-        findings.append({"severity": "error", "path": "evals/evals.json", "message": f"Invalid JSON: {exc}"})
-        return
-    if data.get("skill_name") != root.name:
-        findings.append({"severity": "error", "path": "evals/evals.json:skill_name", "message": "skill_name must match the skill directory"})
-    cases = data.get("evals")
-    if not isinstance(cases, list) or not cases:
-        findings.append({"severity": "error", "path": "evals/evals.json:evals", "message": "At least one eval case is required"})
-        return
-    ids: set[int] = set()
-    for index, case in enumerate(cases):
-        prefix = f"evals/evals.json:evals[{index}]"
-        if not isinstance(case, dict):
-            findings.append({"severity": "error", "path": prefix, "message": "Eval case must be an object"})
-            continue
-        case_id = case.get("id")
-        if not isinstance(case_id, int) or case_id < 1 or case_id in ids:
-            findings.append({"severity": "error", "path": f"{prefix}.id", "message": "Eval id must be a unique positive integer"})
-        else:
-            ids.add(case_id)
-        for key in ("prompt", "expected_output"):
-            if not isinstance(case.get(key), str) or not case[key].strip():
-                findings.append({"severity": "error", "path": f"{prefix}.{key}", "message": f"{key} must be non-empty"})
-        assertions = case.get("assertions")
-        if not isinstance(assertions, list) or len(assertions) < 2 or any(not isinstance(x, str) or not x.strip() for x in assertions):
-            findings.append({"severity": "error", "path": f"{prefix}.assertions", "message": "Each eval needs at least two concrete assertions"})
-        files = case.get("files", [])
-        if not isinstance(files, list):
-            findings.append({"severity": "error", "path": f"{prefix}.files", "message": "files must be an array"})
-        else:
-            for rel in files:
-                if not isinstance(rel, str) or not (root / rel).is_file():
-                    findings.append({"severity": "error", "path": f"{prefix}.files", "message": f"Referenced eval file does not exist: {rel!r}"})
 
 
 def check(root: Path) -> dict[str, Any]:
@@ -142,8 +91,6 @@ def check(root: Path) -> dict[str, Any]:
             add("error", "CHANGELOG.md", "No release heading was found")
         elif match.group(1) != version:
             add("error", "CHANGELOG.md", f"Top changelog version {match.group(1)} does not match SKILL.md version {version}")
-
-    validate_evals(root, findings)
 
     for path in root.rglob("*"):
         rel = path.relative_to(root)

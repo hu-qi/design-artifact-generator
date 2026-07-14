@@ -24,15 +24,16 @@ def main() -> int:
     args = parser.parse_args()
 
     root = Path(__file__).resolve().parent.parent
+    skill_root = root / "skills" / "design-artifact-generator"
     env = dict(os.environ)
     env["PYTHONDONTWRITEBYTECODE"] = "1"
     checks: list[dict[str, Any]] = []
-    checks.append(run("skill structure", [sys.executable, "scripts/check_skill.py", "."], root, env))
+    checks.append(run("skill structure", [sys.executable, str(skill_root / "scripts" / "check_skill.py"), str(skill_root)], root, env))
     checks.append(run("unit and contract tests", [sys.executable, "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py", "-v"], root, env))
 
     with tempfile.TemporaryDirectory() as temp_dir:
         output = Path(temp_dir) / "skill.zip"
-        checks.append(run("distribution smoke build", [sys.executable, "scripts/build_skill_distribution.py", ".", "--out", str(output)], root, env))
+        checks.append(run("distribution smoke build", [sys.executable, str(skill_root / "scripts" / "build_skill_distribution.py"), str(skill_root), "--out", str(output)], root, env))
         if not output.is_file():
             checks.append({"name": "distribution exists", "command": [], "returncode": 1})
 

@@ -13,7 +13,9 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SCRIPTS = ROOT / "scripts"
+SKILL_ROOT = ROOT / "skills" / "design-artifact-generator"
+SCRIPTS = SKILL_ROOT / "scripts"
+REPO_SCRIPTS = ROOT / "scripts"
 VALID = ROOT / "tests" / "fixtures" / "minimal-artifact"
 INVALID_DESIGN = ROOT / "tests" / "fixtures" / "invalid-design" / "DESIGN.md"
 BROKEN = ROOT / "tests" / "fixtures" / "broken-artifact"
@@ -80,7 +82,7 @@ class DesignArtifactScriptTests(unittest.TestCase):
                 self.assertFalse(any("__pycache__" in name for name in names))
 
     def test_skill_source_check_passes(self) -> None:
-        result = run(str(SCRIPTS / "check_skill.py"), str(ROOT))
+        result = run(str(SCRIPTS / "check_skill.py"), str(SKILL_ROOT))
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertTrue(json.loads(result.stdout)["valid"])
 
@@ -88,21 +90,22 @@ class DesignArtifactScriptTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             one = Path(temp_dir) / "one.zip"
             two = Path(temp_dir) / "two.zip"
-            first = run(str(SCRIPTS / "build_skill_distribution.py"), str(ROOT), "--out", str(one))
-            second = run(str(SCRIPTS / "build_skill_distribution.py"), str(ROOT), "--out", str(two))
+            first = run(str(SCRIPTS / "build_skill_distribution.py"), str(SKILL_ROOT), "--out", str(one))
+            second = run(str(SCRIPTS / "build_skill_distribution.py"), str(SKILL_ROOT), "--out", str(two))
             self.assertEqual(first.returncode, 0, first.stdout + first.stderr)
             self.assertEqual(second.returncode, 0, second.stdout + second.stderr)
             self.assertEqual(digest(one), digest(two))
             with zipfile.ZipFile(one) as archive:
                 self.assertIn("design-artifact-generator/SKILL.md", archive.namelist())
-                self.assertIn("design-artifact-generator/.github/workflows/ci.yml", archive.namelist())
+                self.assertIn("design-artifact-generator/scripts/validate_design_md.py", archive.namelist())
                 self.assertFalse(any("__pycache__" in name for name in archive.namelist()))
+                self.assertFalse(any(name.startswith("design-artifact-generator/.github/") for name in archive.namelist()))
 
     def test_eval_iteration_aggregate_compare_plan_and_promote(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             temp = Path(temp_dir)
             workspace = temp / "workspace"
-            init = run(str(SCRIPTS / "manage_evals.py"), "init", "--skill-root", str(ROOT), "--workspace", str(workspace), "--iteration", "1", "--skill-version", "1.1.0")
+            init = run(str(REPO_SCRIPTS / "manage_evals.py"), "init", "--skill-root", str(ROOT), "--workspace", str(workspace), "--iteration", "1", "--skill-version", "1.1.0")
             self.assertEqual(init.returncode, 0, init.stdout + init.stderr)
             iteration = workspace / "iteration-1"
             manifest = json.loads((iteration / "run-manifest.json").read_text())
@@ -122,18 +125,18 @@ class DesignArtifactScriptTests(unittest.TestCase):
             (iteration / "review.json").write_text(json.dumps({"approved": True, "reviewer": "test", "notes": "Reviewed synthetic test data."}, indent=2) + "\n")
 
             benchmark = iteration / "benchmark.json"
-            aggregate = run(str(SCRIPTS / "manage_evals.py"), "aggregate", "--skill-root", str(ROOT), "--iteration-root", str(iteration), "--out", str(benchmark))
+            aggregate = run(str(REPO_SCRIPTS / "manage_evals.py"), "aggregate", "--skill-root", str(ROOT), "--iteration-root", str(iteration), "--out", str(benchmark))
             self.assertEqual(aggregate.returncode, 0, aggregate.stdout + aggregate.stderr)
             comparison = iteration / "comparison.json"
             baseline = temp / "baseline.json"
             baseline.write_text(json.dumps({"schemaVersion": 1, "status": "unestablished", "benchmark": None}) + "\n")
-            compare = run(str(SCRIPTS / "manage_evals.py"), "compare", "--benchmark", str(benchmark), "--baseline", str(baseline), "--out", str(comparison))
+            compare = run(str(REPO_SCRIPTS / "manage_evals.py"), "compare", "--benchmark", str(benchmark), "--baseline", str(baseline), "--out", str(comparison))
             self.assertEqual(compare.returncode, 0, compare.stdout + compare.stderr)
             plan = iteration / "ITERATION_PLAN.md"
-            planned = run(str(SCRIPTS / "manage_evals.py"), "plan", "--benchmark", str(benchmark), "--comparison", str(comparison), "--out", str(plan))
+            planned = run(str(REPO_SCRIPTS / "manage_evals.py"), "plan", "--benchmark", str(benchmark), "--comparison", str(comparison), "--out", str(plan))
             self.assertEqual(planned.returncode, 0, planned.stdout + planned.stderr)
             self.assertIn("Skill Iteration Plan", plan.read_text())
-            promoted = run(str(SCRIPTS / "manage_evals.py"), "promote", "--benchmark", str(benchmark), "--comparison", str(comparison), "--baseline", str(baseline))
+            promoted = run(str(REPO_SCRIPTS / "manage_evals.py"), "promote", "--benchmark", str(benchmark), "--comparison", str(comparison), "--baseline", str(baseline))
             self.assertEqual(promoted.returncode, 0, promoted.stdout + promoted.stderr)
             self.assertEqual(json.loads(baseline.read_text())["status"], "established")
 

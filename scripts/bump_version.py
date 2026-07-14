@@ -36,7 +36,7 @@ def main() -> int:
     args = parser.parse_args()
 
     root = args.root.resolve()
-    skill = root / "SKILL.md"
+    skill = root / "skills" / "design-artifact-generator" / "SKILL.md"
     changelog = root / "CHANGELOG.md"
     text = skill.read_text(encoding="utf-8")
     match = VERSION_LINE_RE.search(text)

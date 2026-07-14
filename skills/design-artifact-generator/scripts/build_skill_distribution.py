@@ -71,7 +71,7 @@ def write_entry(archive: zipfile.ZipFile, source: Path, arcname: str) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build a reproducible Agent Skill ZIP and SHA-256 sidecar")
-    parser.add_argument("root", nargs="?", type=Path, default=Path(__file__).resolve().parent.parent)
+    parser.add_argument("root", nargs="?", type=Path, default=Path(__file__).resolve().parent.parent)  # skills/design-artifact-generator/
     parser.add_argument("--out", type=Path)
     parser.add_argument("--skip-check", action="store_true")
     args = parser.parse_args()

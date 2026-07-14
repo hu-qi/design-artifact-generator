@@ -39,7 +39,7 @@ jobs:
           tag_version="${GITHUB_REF_NAME#v}"
           skill_version=$(python - <<'PY'
           import re, yaml
-          text = open('SKILL.md', encoding='utf-8').read()
+          text = open('skills/design-artifact-generator/SKILL.md', encoding='utf-8').read()
           fm = re.match(r'\A---\s*\n(.*?)\n---', text, re.S).group(1)
           print(yaml.safe_load(fm)['metadata']['version'])
           PY
@@ -56,7 +56,7 @@ jobs:
       - name: Build release files
         run: |
           mkdir -p dist
-          python scripts/build_skill_distribution.py . --out "dist/design-artifact-generator-${GITHUB_REF_NAME}.zip"
+          python skills/design-artifact-generator/scripts/build_skill_distribution.py skills/design-artifact-generator --out "dist/design-artifact-generator-${GITHUB_REF_NAME}.zip"
 
       - name: Upload workflow artifact
         uses: actions/upload-artifact@v7
